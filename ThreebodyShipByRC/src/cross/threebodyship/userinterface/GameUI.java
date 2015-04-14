@@ -30,31 +30,29 @@ public class GameUI extends JFrame implements Observer{
 	public GameUI(Game game,int width,int height){
 		this.game = game;
 		mainCanvas = new Canvas();
+		mainCanvas.setSize(width, height);
 		controller = new GameController(this.game);
 		
 		JPanel text = new JPanel();
-		JLabel test = new JLabel();
 		speedLabel = new JLabel();
 		degreeLabel = new JLabel();
 		
+		//可以去掉。。。
 		text.add(speedLabel);
 		text.add(degreeLabel);
 		
 		this.add(text,BorderLayout.NORTH);
 		this.add(mainCanvas,BorderLayout.CENTER);
-		this.add(test,BorderLayout.SOUTH);
-		test.setText("location:"+mainCanvas.getX()+" "+mainCanvas.getY());
 		this.pack();
 		this.setLocation(100,100);
-		this.setSize(width, height);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
-		//mainGamePanel.addKeyListener(controller);
-		//text.addKeyListener(controller);
+		
 		this.addKeyListener(controller);
 	}
 	
+	//主画板
 	public void repaintMain(){
 		//mainCanvas.repaint();
 		Graphics g = mainCanvas.getGraphics();
@@ -64,12 +62,14 @@ public class GameUI extends JFrame implements Observer{
 		//System.out.println(1);
 		speedLabel.setText("speed:"+Double.toString(game.ship.getSpeed()));
 		degreeLabel.setText("degreeToEast:"+Double.toString(Math.toDegrees(game.ship.getDegreeToEast())));
-		
+
+		paintWinArea(g);
+		paintStartArea(g);
 		paintStar(g,game.star);
 		paintShip(g,game.ship);
-		paintWinArea(g);
 	}
 		
+	//画获胜区域
 	public void paintWinArea(Graphics g){
 		g.setColor(Color.yellow);
 		
@@ -82,6 +82,19 @@ public class GameUI extends JFrame implements Observer{
 		g.fillOval(locationx, locationy, (int)r*2, (int)r*2);
 	}
 	
+	//画开始的发射台
+	public void paintStartArea(Graphics g){
+		g.setColor(Color.yellow);
+		
+		int height = mainCanvas.getHeight();
+		double r = height/4;
+		int locationx = -(int)r*3/2;
+		int locationy = (int)height/2 - (int)r;
+		
+		g.fillOval(locationx, locationy, (int)r*2, (int)r*2);
+	}
+	
+	//画星球
 	public void paintStar(Graphics g, Star star){
 		
 		g.setColor(Color.pink);
@@ -99,13 +112,8 @@ public class GameUI extends JFrame implements Observer{
 				star.getSize());
 	}
 		
+	//画飞船
 	public void paintShip(Graphics g, Ship ship){
-		
-		if((ship.getLocation().x<0)||
-				(ship.getLocation().x+ship.getSize()>mainCanvas.getWidth())||
-				(ship.getLocation().y<0)||
-				(ship.getLocation().y+ship.getSize()>mainCanvas.getHeight())
-				) ship.outOfBorder = true;
 		
 		g.setColor(Color.red);
 			
@@ -115,6 +123,7 @@ public class GameUI extends JFrame implements Observer{
 				ship.getSize());
 	}
 	
+	//观察Game的动态
 	public void update(Observable o, Object arg0) {
 		repaintMain();
 	}

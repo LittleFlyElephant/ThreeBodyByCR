@@ -1,8 +1,8 @@
 package cross.threeebodyship.model;
 
 public class Star {
-	public static double G = 0.000000667;
-	private double mass = 1000000;
+	public static double G = 0.0000006672;
+	private double mass = 100000000;
 	private int size;
 	private Point centerPoint;
 	private int gravityScope;

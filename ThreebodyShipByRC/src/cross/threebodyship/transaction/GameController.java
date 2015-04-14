@@ -18,6 +18,7 @@ public class GameController implements KeyListener{
 	public void keyPressed(KeyEvent arg0) {
 		int keycode = arg0.getKeyCode();
 		
+		//开始阶段用户设置相应参数
 		if(game.isStarting)
 			switch(keycode){
 				case KeyEvent.VK_U:{
@@ -35,10 +36,20 @@ public class GameController implements KeyListener{
 					game.inGame = true;
 					break;
 				}
+				case KeyEvent.VK_UP:{
+					game.ship.setLocation(game.ship.getLocation().x, 
+							game.ship.getLocation().y-3);
+					break;
+				}
+				case KeyEvent.VK_DOWN:{
+					game.ship.setLocation(game.ship.getLocation().x,
+							game.ship.getLocation().y+3);
+					break;
+				}
 		}
 			
-		
-		if(game.getState())
+		//游戏阶段用户操作
+		if(game.inGame)
 			switch(keycode){
 				case KeyEvent.VK_SPACE:{
 					if(count == 1){
